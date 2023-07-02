@@ -1,4 +1,4 @@
-name: build, test and deploy game2048
+name: github pipeline
 
 on:
   push:
@@ -36,6 +36,6 @@ jobs:
       - name: Package
         run: mvn package
 
-      - name: Deploy game2048
+      - name: Deploy
         run: |
           cp ./target/game2048.war /usr/local/tomcat/webapps
