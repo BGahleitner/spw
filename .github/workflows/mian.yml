@@ -1,4 +1,4 @@
-name: github-pipeline
+name: Exercise3
 
 on:
   push:
@@ -9,49 +9,32 @@ env:
   MAVEN_OPTS: "-Dmaven.repo.local=./$maven_packages_cache"
 
 jobs:
-  Checkout:
+  oneJobIsAllItTakes:
     runs-on: self-hosted
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Java Version 17
+      - name: Setup
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'oracle'
-  
-  Build:
-    needs: Checkout
-    runs-on: self-hosted
-    steps:
+
       - name: Build
         run: mvn compile
 
-      - name: Archive artifacts
+      - name: Archive
         uses: actions/upload-artifact@v3
         with:
           name: ${{ github.job }}-artifacts
           path: target/*
 
-  Test:
-    needs: Build
-    runs-on: self-hosted
-    steps:
       - name: Test
         run: mvn test
 
-  Package:
-    needs: Test
-    runs-on: self-hosted
-    steps:
       - name: Package
         run: mvn package
 
-  Deploy:
-    needs: Package
-    runs-on: self-hosted
-    steps:
       - name: Deploy
-        run: |
-          cp ./target/game2048.war /usr/local/tomcat/webapps
+        run: cp ./target/game2048.war /usr/local/tomcat/webapps
