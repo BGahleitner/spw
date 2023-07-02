@@ -10,6 +10,7 @@ env:
 
 jobs:
   oneJobIsAllItTakes:
+    name: oneJob
     runs-on: self-hosted
     steps:
       - name: Checkout
@@ -37,6 +38,7 @@ jobs:
         run: mvn package
 
   Deploy:
+    name: Deploy
     runs-on: self-hosted
     needs: oneJobIsAllItTakes
     - name: Deploy
