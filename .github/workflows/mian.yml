@@ -9,7 +9,7 @@ env:
   MAVEN_OPTS: "-Dmaven.repo.local=./$maven_packages_cache"
 
 jobs:
-  checkout:
+  Checkout:
     runs-on: self-hosted
     steps:
       - name: Checkout code
@@ -21,7 +21,8 @@ jobs:
           java-version: '17'
           distribution: 'oracle'
   
-  build:
+  Build:
+    needs: checkout
     runs-on: self-hosted
     steps:
       - name: Build
@@ -33,19 +34,22 @@ jobs:
           name: ${{ github.job }}-artifacts
           path: target/*
 
-  test:
+  Test:
+    needs: build
     runs-on: self-hosted
     steps:
       - name: Test
         run: mvn test
 
-  package:
+  Package:
+    needs: test
     runs-on: self-hosted
     steps:
       - name: Package
         run: mvn package
 
   Deploy:
+    needs: package
     runs-on: self-hosted
     steps:
       - name: Deploy
