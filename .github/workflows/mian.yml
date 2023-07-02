@@ -4,9 +4,9 @@ on:
   push:
     branches:
       - main
+
 env:
-  maven_packages_cache: ".m2/repository"
-  MAVEN_OPTS: "-Dmaven.repo.local=./$maven_packages_cache"
+  MAVEN_OPTS: "-Dmaven.repo.local=./.m2/repository"
 
 jobs:
   oneJobIsAllItTakes:
@@ -16,25 +16,31 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup
+        needs: Checkout
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'oracle'
 
       - name: Build
+        needs: Setup
         run: mvn compile
 
       - name: Archive
+        needs: Build
         uses: actions/upload-artifact@v3
         with:
           name: ${{ github.job }}-artifacts
           path: target/*
 
       - name: Test
+        needs: Archive
         run: mvn test
 
       - name: Package
+        needs: Test
         run: mvn package
 
       - name: Deploy
+        needs: Deploy
         run: cp ./target/game2048.war /usr/local/tomcat/webapps
