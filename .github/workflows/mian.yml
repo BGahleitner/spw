@@ -41,5 +41,5 @@ jobs:
     name: Deploy
     runs-on: self-hosted
     needs: oneJobIsAllItTakes
-    - name: Deploy
+    steps:
         run: cp ./target/game2048.war /usr/local/tomcat/webapps
