@@ -9,7 +9,7 @@ env:
   MAVEN_OPTS: "-Dmaven.repo.local=./$maven_packages_cache"
 
 jobs:
-  do_everything:
+  checkout:
     runs-on: self-hosted
     steps:
       - name: Checkout code
@@ -20,7 +20,10 @@ jobs:
         with:
           java-version: '17'
           distribution: 'oracle'
-
+  
+  build:
+    runs-on: self-hosted
+    steps:
       - name: Build
         run: mvn compile
 
@@ -30,12 +33,21 @@ jobs:
           name: ${{ github.job }}-artifacts
           path: target/*
 
+  test:
+    runs-on: self-hosted
+    steps:
       - name: Test
         run: mvn test
 
+  package:
+    runs-on: self-hosted
+    steps:
       - name: Package
         run: mvn package
 
+  Deploy:
+    runs-on: self-hosted
+    steps:
       - name: Deploy
         run: |
           cp ./target/game2048.war /usr/local/tomcat/webapps
