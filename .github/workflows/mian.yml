@@ -42,4 +42,5 @@ jobs:
     runs-on: self-hosted
     needs: oneJobIsAllItTakes
     steps:
-        run: cp ./target/game2048.war /usr/local/tomcat/webapps
+        run: |
+         cp ./target/game2048.war /usr/local/tomcat/webapps
