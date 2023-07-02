@@ -4,13 +4,16 @@ on:
   push:
     branches:
       - main
+  
+  merge:
+    branches:
+      - main
 
 env:
   MAVEN_OPTS: "-Dmaven.repo.local=./.m2/repository"
 
 jobs:
   oneJobIsAllItTakes:
-    name: oneJob
     runs-on: self-hosted
     steps:
       - name: Checkout
@@ -37,10 +40,5 @@ jobs:
       - name: Package
         run: mvn package
 
-  Deploy:
-    name: Deploy
-    runs-on: self-hosted
-    needs: oneJobIsAllItTakes
-    steps:
-        run: |
-         cp ./target/game2048.war /usr/local/tomcat/webapps
+      - name: Deploy
+        run: cp ./target/game2048.war /usr/local/tomcat/webapps
