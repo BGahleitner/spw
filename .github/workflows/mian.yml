@@ -5,7 +5,7 @@ on:
     branches:
       - main
   
-  merge:
+  fork:
     branches:
       - main
 
